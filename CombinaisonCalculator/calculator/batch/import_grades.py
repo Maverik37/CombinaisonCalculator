@@ -38,11 +38,9 @@ def get_palier_carac(nb,carac):
 
 def add_color(nb,carac,color,value):
     try:
-        print(color)
         obj_color = Couleur()
 
         #Instance Couleur
-
         obj_color.co_name = color
         
         # Récupération de l'instance de palier
@@ -50,7 +48,6 @@ def add_color(nb,carac,color,value):
 
         #Récupération de l'instance de la couleur
         obj_carac = Caracteristique.objects.get(c_name=carac)
-        print(obj_palier,obj_carac)
         obj_color.co_palier = obj_palier
         obj_color.co_caracteristique = obj_carac
         obj_color.co_effet = value
@@ -59,6 +56,7 @@ def add_color(nb,carac,color,value):
         print(e)
 
 #Corps principal du script
+
 with open(file,newline='') as csvfile:
     csvreader = csv.reader(csvfile,delimiter=';')
 
@@ -66,7 +64,6 @@ with open(file,newline='') as csvfile:
         color = row[0]
         is_color_present = is_already_present(color)
         if not is_color_present:
-            print("im here")
             #1er palier
             nb_medaille_first_palier = row[1].split(' ')[0]
             value_first_palier = row[1].split(' ')[2].replace('+','').replace('%','')
@@ -80,21 +77,11 @@ with open(file,newline='') as csvfile:
             value_third_palier = row[2].split(' ')[2].replace('+','').replace('%','')
             effet_affected_third_palier = row[2].split(' ')[3].replace('_',' ')
 
-            # ajout en base de la nouvelle couleur
-            print(color)
-            obj_color_first = Couleur()
-
-            #Instance Couleur 1er palier
-
-            obj_color_first.co_name = color
-            
-            # Récupération de l'instance de palier
-            obj_palier_first = Palier.objects.get(p_nombre_medailles=nb_medaille_first_palier)
-
-            #Récupération de l'instance de la couleur
-            obj_carac_first = Caracteristique.objects.get(c_name=effet_affected_first_palier)
-            obj_color_first.co_palier = obj_palier_first
-            obj_color_first.co_caracteristique = obj_carac_first
-            obj_color_first.co_effet = value_first_palier
-            obj_color_first.save()
+            #Ajout en base
+            try:
+                add_color(nb_medaille_first_palier,effet_affected_first_palier,color,value_first_palier)
+                add_color(nb_medaille_second_palier,effet_affected_second_palier,color,value_second_palier)
+                add_color(nb_medaille_third_palier,effet_affected_third_palier,color,value_third_palier)
+            except Exception as e:
+                print(e)
           
