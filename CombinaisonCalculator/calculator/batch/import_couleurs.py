@@ -14,7 +14,7 @@ from calculator.models import *
 
 # Initialisation de certaines variables
 
-file="/home/fourbasse/Téléchargements/grade.csv"
+file="/home/fourbasse/Téléchargements/couleurs.csv"
 
 # Définition des fonctions
 
